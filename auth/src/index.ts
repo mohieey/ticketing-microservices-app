@@ -1,6 +1,7 @@
 import express from "express";
 import { json } from "body-parser";
 import "express-async-errors";
+import mongoose from "mongoose";
 
 //Routes
 import { currentUserRouter } from "./routes/currentUser";
@@ -25,6 +26,22 @@ app.all("*", async () => {
 
 app.use(errorHandler);
 
+const start = async () => {
+  try {
+    await mongoose.connect("mongodb://auth-mongo-srv:27017/auth", {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    });
+
+    console.log("Connected to mongodb");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 app.listen(3000, () => {
   console.log("listening on 3000");
 });
+
+start();
