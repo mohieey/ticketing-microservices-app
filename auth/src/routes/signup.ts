@@ -32,7 +32,7 @@ router.post(
     }
 
     const newUser = User.build({ email, password });
-    newUser.save();
+    await newUser.save();
 
     return res.status(201).send(newUser);
   }
