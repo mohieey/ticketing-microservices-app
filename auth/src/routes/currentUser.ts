@@ -1,7 +1,7 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import { currentUser } from "../middlewares/currentUser";
-import { requireAuth } from "../middlewares/requireAuth";
+import { currentUser } from "@ticmoh/common";
+import { requireAuth } from "@ticmoh/common";
 
 const router = express.Router();
 

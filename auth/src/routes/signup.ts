@@ -1,10 +1,12 @@
 import express, { Request, Response } from "express";
 import { body, validationResult } from "express-validator";
-import { RequestValidationError } from "../errors/requestValidationError";
-import { BadRequestError } from "./../errors/badRequestError";
+import {
+  RequestValidationError,
+  BadRequestError,
+  validateRequest,
+} from "@ticmoh/common";
 import { User } from "../models/user";
 import jwt from "jsonwebtoken";
-import { validateRequest } from "../middlewares/validateRequest";
 
 const router = express.Router();
 

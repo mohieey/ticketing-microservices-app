@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 import { body, validationResult } from "express-validator";
-import { validateRequest } from "../middlewares/validateRequest";
-import { BadRequestError } from "../errors/badRequestError";
+import { validateRequest, BadRequestError } from "@ticmoh/common";
 import { User } from "../models/user";
 import { Password } from "../services/password";
 import jwt from "jsonwebtoken";

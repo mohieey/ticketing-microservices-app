@@ -8,9 +8,8 @@ import { currentUserRouter } from "./routes/currentUser";
 import { signupRouter } from "./routes/signup";
 import { signinRouter } from "./routes/signin";
 import { signoutRouter } from "./routes/signout";
-import { NotFoundError } from "./errors/notFoundError";
+import { NotFoundError, errorHandler } from "@ticmoh/common";
 //Middlewares
-import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
 app.set("trust proxy", true);
