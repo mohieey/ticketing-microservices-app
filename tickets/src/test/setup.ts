@@ -4,13 +4,13 @@ import { app } from "../app";
 import request from "supertest";
 import jwt from "jsonwebtoken";
 
-declare global {
-  namespace NodeJS {
-    interface Global {
-      signup(): string;
-    }
-  }
-}
+// declare global {
+//   namespace NodeJS {
+//     interface Global {
+//       signup(): string;
+//     }
+//   }
+// }
 
 let mongo: any;
 
@@ -39,16 +39,16 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-// global.signup = () => {
-//   const payload = { id: "idsjuihe", email: "test@test.com" };
+export const signup = () => {
+  const payload = { id: "idsjuihe", email: "test@test.com" };
 
-//   const token = jwt.sign(payload, process.env.JWT_KEY!);
+  const token = jwt.sign(payload, process.env.JWT_KEY!);
 
-//   const session = { jwt: token };
+  const session = { jwt: token };
 
-//   const sessionJSON = JSON.stringify(session);
+  const sessionJSON = JSON.stringify(session);
 
-//   const base64 = Buffer.from(sessionJSON).toString("base64");
+  const base64 = Buffer.from(sessionJSON).toString("base64");
 
-//   return `express:sess=${base64}`;
-// };
+  return `express:sess=${base64}`;
+};
