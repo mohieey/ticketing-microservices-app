@@ -2,10 +2,10 @@ import express from "express";
 import { json } from "body-parser";
 import "express-async-errors";
 import cookieSession from "cookie-session";
-import { NotFoundError, errorHandler } from "@ticmoh/common";
+import { NotFoundError, errorHandler, currentUser } from "@ticmoh/common";
 
 //Routes
-// import { currentUserRouter } from "./routes/currentUser";
+import { newTicketRouter } from "./routes/newTicket";
 // import { signupRouter } from "./routes/signup";
 // import { signinRouter } from "./routes/signin";
 // import { signoutRouter } from "./routes/signout";
@@ -17,8 +17,9 @@ app.use(json());
 app.use(
   cookieSession({ signed: false, secure: process.env.NODE_ENV !== "test" })
 );
+app.use(currentUser);
 
-// app.use(currentUserRouter);
+app.use(newTicketRouter);
 // app.use(signupRouter);
 // app.use(signinRouter);
 // app.use(signoutRouter);
