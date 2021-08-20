@@ -1,6 +1,7 @@
 import express, { Response, Request } from "express";
 import { requireAuth, validateRequest } from "@ticmoh/common";
 import { body } from "express-validator";
+import { Ticket } from "../models/ticket";
 
 const router = express.Router();
 
@@ -15,7 +16,17 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    return res.status(201).send();
+    const { title, price } = req.body;
+
+    const newTicket = Ticket.build({
+      title,
+      price,
+      userId: req.currentUser!.id,
+    });
+
+    await newTicket.save();
+
+    return res.status(201).send(newTicket);
   }
 );
 
