@@ -7,7 +7,7 @@ import { NotFoundError, errorHandler, currentUser } from "@ticmoh/common";
 //Routes
 import { newTicketRouter } from "./routes/newTicket";
 import { getTicketRouter } from "./routes/getTicket";
-// import { signinRouter } from "./routes/signin";
+import { getAllTicketsRouter } from "./routes/getAllTickets";
 // import { signoutRouter } from "./routes/signout";
 //Middlewares
 
@@ -21,7 +21,7 @@ app.use(currentUser);
 
 app.use(newTicketRouter);
 app.use(getTicketRouter);
-// app.use(signinRouter);
+app.use(getAllTicketsRouter);
 // app.use(signoutRouter);
 
 app.all("*", async () => {

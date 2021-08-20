@@ -1,6 +1,5 @@
 import express, { Response, Request } from "express";
-import { requireAuth, validateRequest, NotFoundError } from "@ticmoh/common";
-import { body } from "express-validator";
+import { NotFoundError } from "@ticmoh/common";
 import { Ticket } from "../models/ticket";
 
 const router = express.Router();
