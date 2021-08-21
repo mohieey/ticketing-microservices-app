@@ -1,15 +1,15 @@
 import request from "supertest";
 import { app } from "../../app";
-import { signup } from "../../test/setup";
+import { createCookie } from "../../test/setup";
 import mongoose from "mongoose";
 
-it("should return 404 if the ticket is unfound", async () => {
+it("should return 404 if the ticket is not found", async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
   await request(app).get(`/api/tickets/${id}`).send().expect(404);
 });
 
 it("should return the ticket if the ticket is found", async () => {
-  const cookie = signup();
+  const cookie = createCookie();
 
   const title = "ticketTitle";
   const price = 23;

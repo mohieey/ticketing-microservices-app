@@ -1,7 +1,7 @@
 import request from "supertest";
 import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
-import { signup } from "../../test/setup";
+import { createCookie } from "../../test/setup";
 
 it("should listen to post requests on /api/tickets", async () => {
   const response = await request(app).post("/api/tickets").send({});
@@ -16,7 +16,7 @@ it("is only accessed if the user is signed in", async () => {
 });
 
 it("returns a status code other than 401 if the user is signed in", async () => {
-  const cookie = signup();
+  const cookie = createCookie();
 
   const response = await request(app)
     .post("/api/tickets")
@@ -27,7 +27,7 @@ it("returns a status code other than 401 if the user is signed in", async () => 
 });
 
 it("returns an error if an invalid title is provided", async () => {
-  const cookie = signup();
+  const cookie = createCookie();
 
   await request(app)
     .post("/api/tickets")
@@ -43,7 +43,7 @@ it("returns an error if an invalid title is provided", async () => {
 });
 
 it("returns an error if an invalid price is provided", async () => {
-  const cookie = signup();
+  const cookie = createCookie();
 
   await request(app)
     .post("/api/tickets")
@@ -62,7 +62,7 @@ it("creats a ticket with valid inputs", async () => {
   let tickets = await Ticket.find({});
   expect(tickets.length).toEqual(0);
 
-  const cookie = signup();
+  const cookie = createCookie();
 
   const title = "ticketTitle";
   const price = 23;

@@ -1,14 +1,6 @@
 import request from "supertest";
 import { app } from "../../app";
-import { signup } from "../../test/setup";
-
-const createTicket = () => {
-  return request(app)
-    .post("/api/tickets")
-    .set("Cookie", signup())
-    .send({ title: "ticketTitle", price: 34 })
-    .expect(201);
-};
+import { createTicket } from "../../test/setup";
 
 it("should return a list of tickets", async () => {
   await createTicket();

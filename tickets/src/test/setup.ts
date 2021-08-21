@@ -1,16 +1,8 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
+import request from "supertest";
 import mongoose from "mongoose";
 import { app } from "../app";
-import request from "supertest";
 import jwt from "jsonwebtoken";
-
-// declare global {
-//   namespace NodeJS {
-//     interface Global {
-//       signup(): string;
-//     }
-//   }
-// }
 
 let mongo: any;
 
@@ -39,8 +31,11 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-export const signup = () => {
-  const payload = { id: "idsjuihe", email: "test@test.com" };
+export const createCookie = () => {
+  const payload = {
+    id: new mongoose.Types.ObjectId().toHexString(),
+    email: "test@test.com",
+  };
 
   const token = jwt.sign(payload, process.env.JWT_KEY!);
 
@@ -51,4 +46,12 @@ export const signup = () => {
   const base64 = Buffer.from(sessionJSON).toString("base64");
 
   return `express:sess=${base64}`;
+};
+
+export const createTicket = (cookie?: any) => {
+  return request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie || createCookie())
+    .send({ title: "ticketTitle", price: 34 })
+    .expect(201);
 };

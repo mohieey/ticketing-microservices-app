@@ -8,7 +8,6 @@ it("should return the details of the current user", async () => {
     .expect(201);
 
   const cookie = authResponse.get("Set-Cookie");
-  //   const cookie = await global.signup();
 
   const response = await request(app)
     .get("/api/users/currentuser")
@@ -20,8 +19,7 @@ it("should return the details of the current user", async () => {
 });
 
 it("should response with null if not authnicated", async () => {
-  const response = await request(app)
-    .get("/api/users/currentuser")
-    .send()
-    .expect(401);
+  const response = await request(app).get("/api/users/currentuser").send();
+
+  expect(response.body.currentUser).toEqual(null);
 });
