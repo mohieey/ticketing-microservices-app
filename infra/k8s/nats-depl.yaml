@@ -35,10 +35,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: tickets-srv
+  name: nats-srv
 spec:
   selector:
-    app: tickets
+    app: nats
   ports:
     - name: client
       protocol: TCP
@@ -46,5 +46,5 @@ spec:
       targetPort: 4222
     - name: monitoring
       protocol: TCP
-      port: 4222
-      targetPort: 4222
+      port: 8222
+      targetPort: 8222
