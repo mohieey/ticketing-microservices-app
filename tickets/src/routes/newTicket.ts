@@ -2,6 +2,8 @@ import express, { Response, Request } from "express";
 import { requireAuth, validateRequest } from "@ticmoh/common";
 import { body } from "express-validator";
 import { Ticket } from "../models/ticket";
+import { TicketCreatedPublisher } from "../events/ticketCreatedPublisher";
+import { natsWrapper } from "./../natsWrapper";
 
 const router = express.Router();
 
@@ -25,6 +27,13 @@ router.post(
     });
 
     await newTicket.save();
+
+    await new TicketCreatedPublisher(natsWrapper.client).publish({
+      id: newTicket.id,
+      title: newTicket.title,
+      price: newTicket.price,
+      userId: newTicket.userId,
+    });
 
     return res.status(201).send(newTicket);
   }
