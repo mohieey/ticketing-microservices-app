@@ -61,7 +61,7 @@ it("should update the ticket with valid title and price", async () => {
     .put(`/api/tickets/${response.body.id}`)
     .set("Cookie", cookie)
     .send({ title: newTitle, price: newPrice })
-    .expect(204);
+    .expect(200);
 
   const ticketResponse = await request(app)
     .get(`/api/tickets/${response.body.id}`)

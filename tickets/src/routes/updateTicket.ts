@@ -7,6 +7,8 @@ import {
 } from "@ticmoh/common";
 import { body } from "express-validator";
 import { Ticket } from "../models/ticket";
+import { TicketUpdatedPublisher } from "../events/ticketUpdatedPublisher";
+import { natsWrapper } from "./../natsWrapper";
 
 const router = express.Router();
 
@@ -32,9 +34,17 @@ router.put(
     }
 
     ticketInDB.set({ title: req.body.title, price: req.body.price });
+    console.log(ticketInDB);
     await ticketInDB.save();
 
-    res.status(204).send(ticketInDB);
+    new TicketUpdatedPublisher(natsWrapper.client).publish({
+      id: ticketInDB.id,
+      title: ticketInDB.title,
+      price: ticketInDB.price,
+      userId: ticketInDB.userId,
+    });
+
+    res.send(ticketInDB);
   }
 );
 
