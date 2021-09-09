@@ -1,7 +1,9 @@
 export const natsWrapper = {
   client: {
-    publish(subject: string, data: string, CB: () => void) {
-      CB();
-    },
+    publish: jest
+      .fn()
+      .mockImplementation((subject: string, data: string, CB: () => void) => {
+        CB();
+      }),
   },
 };
