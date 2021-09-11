@@ -4,20 +4,24 @@ import { Order } from "../models/order";
 
 const router = express.Router();
 
-router.get("/api/orders/:orderId", async (req: Request, res: Response) => {
-  const { orderId } = req.params;
+router.get(
+  "/api/orders/:orderId",
+  requireAuth,
+  async (req: Request, res: Response) => {
+    const { orderId } = req.params;
 
-  const orderInDb = await Order.findById(orderId).populate("ticket");
+    const orderInDb = await Order.findById(orderId).populate("ticket");
 
-  if (!orderInDb) {
-    throw new NotFoundError();
+    if (!orderInDb) {
+      throw new NotFoundError();
+    }
+
+    if (orderInDb.userId !== req.currentUser!.id) {
+      throw new NotAuthorizedError();
+    }
+
+    return res.send(orderInDb);
   }
-
-  if (orderInDb.userId !== req.currentUser!.id) {
-    throw new NotAuthorizedError();
-  }
-
-  return res.send(orderInDb);
-});
+);
 
 export { router as getOrderRouter };
