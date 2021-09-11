@@ -38,14 +38,6 @@ it("Reserves a ticket", async () => {
   const ticket = Ticket.build({ title: "Test Ticket", price: 34 });
   await ticket.save();
 
-  // const order = Order.build({
-  //   ticket,
-  //   userId: "rtopygijg",
-  //   status: OrderStatus.Created,
-  //   expiresAt: new Date(),
-  // });
-  // await order.save();
-
   await request(app)
     .post("/api/orders")
     .set("Cookie", createCookie())
