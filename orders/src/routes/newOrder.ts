@@ -11,6 +11,8 @@ import mongoose from "mongoose";
 
 import { Order } from "../models/order";
 import { Ticket } from "../models/ticket";
+import { OrderCreatedPublisher } from "./../events/publishers/orderCreatedPublisher";
+import { natsWrapper } from "../natsWrapper";
 
 const router = express.Router();
 
@@ -51,6 +53,17 @@ router.post(
       ticket: ticketInDb,
     });
     await order.save();
+
+    new OrderCreatedPublisher(natsWrapper.client).publish({
+      id: order.id,
+      status: OrderStatus.Created,
+      userId: order.userId,
+      expiresAt: order.expiresAt.toISOString(),
+      ticket: {
+        id: ticketInDb.id,
+        price: ticketInDb.price,
+      },
+    });
 
     return res.status(201).send(order);
   }

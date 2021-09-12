@@ -1,6 +1,9 @@
 import express, { Response, Request } from "express";
 import { requireAuth, NotFoundError, NotAuthorizedError } from "@ticmoh/common";
+
 import { Order, OrderStatus } from "../models/order";
+import { OrderCancelledPublisher } from "./../events/publishers/orderCancelledPublisher";
+import { natsWrapper } from "../natsWrapper";
 
 const router = express.Router();
 
@@ -19,6 +22,13 @@ router.delete("/api/orders/:orderId", async (req: Request, res: Response) => {
 
   orderInDb.status = OrderStatus.Cancelled;
   await orderInDb.save();
+
+  new OrderCancelledPublisher(natsWrapper.client).publish({
+    id: orderInDb.id,
+    ticket: {
+      id: orderInDb.ticket.id,
+    },
+  });
 
   return res.status(204).send();
 });
