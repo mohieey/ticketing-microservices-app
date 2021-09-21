@@ -34,7 +34,6 @@ router.put(
     }
 
     ticketInDB.set({ title: req.body.title, price: req.body.price });
-    console.log(ticketInDB);
     await ticketInDB.save();
 
     new TicketUpdatedPublisher(natsWrapper.client).publish({
