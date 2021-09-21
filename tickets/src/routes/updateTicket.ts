@@ -38,6 +38,7 @@ router.put(
 
     new TicketUpdatedPublisher(natsWrapper.client).publish({
       id: ticketInDB.id,
+      version: ticketInDB.version,
       title: ticketInDB.title,
       price: ticketInDB.price,
       userId: ticketInDB.userId,

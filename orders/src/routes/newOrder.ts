@@ -56,6 +56,7 @@ router.post(
 
     new OrderCreatedPublisher(natsWrapper.client).publish({
       id: order.id,
+      version: order.version,
       status: OrderStatus.Created,
       userId: order.userId,
       expiresAt: order.expiresAt.toISOString(),
