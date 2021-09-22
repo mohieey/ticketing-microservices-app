@@ -4,6 +4,7 @@ import { createCookie, createTicket } from "../../test/setup";
 import mongoose from "mongoose";
 import { response } from "express";
 import { natsWrapper } from "./../../natsWrapper";
+import { Ticket } from "../../models/ticket";
 
 const newTitle = "New Titile";
 const newPrice = 45;
@@ -90,4 +91,20 @@ it("publish an event", async () => {
     .expect(200);
 
   expect(natsWrapper.client.publish).toHaveBeenCalled();
+});
+
+it("rejects to update reserved tickets", async () => {
+  const cookie = createCookie();
+
+  const response = await createTicket(cookie);
+
+  const ticketInDB = await Ticket.findById(response.body.id);
+  ticketInDB!.set({ orderId: mongoose.Types.ObjectId().toHexString() });
+  await ticketInDB!.save();
+
+  await request(app)
+    .put(`/api/tickets/${response.body.id}`)
+    .set("Cookie", cookie)
+    .send({ title: newTitle, price: newPrice })
+    .expect(400);
 });
