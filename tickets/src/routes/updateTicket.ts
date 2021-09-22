@@ -4,6 +4,7 @@ import {
   NotAuthorizedError,
   requireAuth,
   validateRequest,
+  BadRequestError,
 } from "@ticmoh/common";
 import { body } from "express-validator";
 import { Ticket } from "../models/ticket";
@@ -27,6 +28,10 @@ router.put(
 
     if (!ticketInDB) {
       throw new NotFoundError();
+    }
+
+    if (ticketInDB.orderId) {
+      throw new BadRequestError("Can not update a reserved ticket");
     }
 
     if (ticketInDB.userId !== req.currentUser!.id) {
