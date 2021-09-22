@@ -18,6 +18,10 @@ export interface TicketDoc extends mongoose.Document {
 
 interface TicketModel extends mongoose.Model<TicketDoc> {
   build(attrs: TicketAttrs): TicketDoc;
+  findTicketByIdAndPreviousVersion(eventData: {
+    id: string;
+    version: number;
+  }): Promise<TicketDoc | null>;
 }
 
 const ticketSchema = new mongoose.Schema(
@@ -41,6 +45,12 @@ ticketSchema.plugin(updateIfCurrentPlugin);
 //Add a method to Model
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
   return new Ticket({ _id: attrs.id, title: attrs.title, price: attrs.price });
+};
+ticketSchema.statics.findTicketByIdAndPreviousVersion = ({ id, version }) => {
+  return Ticket.findOne({
+    _id: id,
+    version: version - 1,
+  });
 };
 
 //Add a method to Document

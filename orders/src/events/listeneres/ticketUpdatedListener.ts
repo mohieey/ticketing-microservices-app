@@ -10,9 +10,9 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
   async onMessage(data: TicketUpdatedEvent["data"], msg: Message) {
     const { id, title, price, version } = data;
 
-    const existingTicket = await Ticket.findOne({
-      _id: id,
-      version: version - 1,
+    const existingTicket = await Ticket.findTicketByIdAndPreviousVersion({
+      id,
+      version,
     });
 
     try {
