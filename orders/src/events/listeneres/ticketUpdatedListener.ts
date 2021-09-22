@@ -25,7 +25,7 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
     }
 
     existingTicket.set({ title, price });
-    existingTicket.save();
+    await existingTicket.save();
 
     msg.ack();
   }
