@@ -1,4 +1,5 @@
 import request from "supertest";
+import mongoose from "mongoose";
 
 import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
@@ -7,7 +8,11 @@ import { OrderStatus } from "@ticmoh/common";
 import { natsWrapper } from "./../../natsWrapper";
 
 const buildTicket = async () => {
-  const ticket = Ticket.build({ title: "Test Ticket", price: 34 });
+  const ticket = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
+    title: "Test Ticket",
+    price: 34,
+  });
   await ticket.save();
 
   return ticket;
