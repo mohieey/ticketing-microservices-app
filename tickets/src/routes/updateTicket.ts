@@ -7,7 +7,7 @@ import {
 } from "@ticmoh/common";
 import { body } from "express-validator";
 import { Ticket } from "../models/ticket";
-import { TicketUpdatedPublisher } from "../events/ticketUpdatedPublisher";
+import { TicketUpdatedPublisher } from "../events/publishers/ticketUpdatedPublisher";
 import { natsWrapper } from "./../natsWrapper";
 
 const router = express.Router();

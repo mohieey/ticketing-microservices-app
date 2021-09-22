@@ -2,7 +2,7 @@ import express, { Response, Request } from "express";
 import { requireAuth, validateRequest } from "@ticmoh/common";
 import { body } from "express-validator";
 import { Ticket } from "../models/ticket";
-import { TicketCreatedPublisher } from "../events/ticketCreatedPublisher";
+import { TicketCreatedPublisher } from "../events/publishers/ticketCreatedPublisher";
 import { natsWrapper } from "./../natsWrapper";
 
 const router = express.Router();
