@@ -2,3 +2,4 @@ auth/node_modules
 client/node_modules
 tickets/node_modules
 orders/node_modules
+expiration/node_modules
