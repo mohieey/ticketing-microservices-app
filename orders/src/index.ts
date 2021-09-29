@@ -3,6 +3,7 @@ import { app } from "./app";
 import { natsWrapper } from "./natsWrapper";
 import { TicketCreatedListener } from "./events/listeneres/ticketCreatedListener";
 import { TicketUpdatedListener } from "./events/listeneres/ticketUpdatedListener";
+import { ExpirationCompleteListener } from "./events/listeneres/expirationCompleteListener";
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -43,6 +44,7 @@ const start = async () => {
     try {
       new TicketCreatedListener(natsWrapper.client).listen();
       new TicketUpdatedListener(natsWrapper.client).listen();
+      new ExpirationCompleteListener(natsWrapper.client).listen();
     } catch (error: any) {
       console.log(error.message);
     }
