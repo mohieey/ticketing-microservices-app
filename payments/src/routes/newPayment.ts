@@ -10,6 +10,7 @@ import {
 } from "@ticmoh/common";
 
 import { Order } from "../models/order";
+import { stripe } from "../stripe";
 
 const router = express.Router();
 
@@ -34,6 +35,13 @@ router.post(
     if (orderInDb.status === OrderStatus.Cancelled) {
       throw new BadRequestError("Can not pay for a cancelled order");
     }
+
+    const charge = await stripe.charges.create({
+      amount: orderInDb.price * 100,
+      currency: "usd",
+      source: token,
+      description: "Charging hte user for the ticket",
+    });
 
     return res.send("dfdfdf");
   }
