@@ -11,6 +11,7 @@ import {
 
 import { Order } from "../models/order";
 import { stripe } from "../stripe";
+import { Payment } from "../models/payment";
 
 const router = express.Router();
 
@@ -42,6 +43,13 @@ router.post(
       source: token,
       description: "Charging hte user for the ticket",
     });
+
+    const newPayment = Payment.build({
+      orderId,
+      stripeId: charge.id,
+      price: orderInDb.price,
+    });
+    await newPayment.save();
 
     return res.status(201).send({ status: "successful payment" });
   }
