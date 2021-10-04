@@ -43,7 +43,7 @@ router.post(
       description: "Charging hte user for the ticket",
     });
 
-    return res.send("dfdfdf");
+    return res.status(201).send({ status: "successful payment" });
   }
 );
 
