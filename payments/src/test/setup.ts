@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 let mongo: any;
 
 jest.mock("../natsWrapper");
+jest.mock("../stripe");
 
 beforeAll(async () => {
   process.env.JWT_KEY = "fdisjfuidshfui";
