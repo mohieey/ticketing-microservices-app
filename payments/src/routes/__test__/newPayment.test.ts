@@ -6,6 +6,7 @@ import { app } from "../../app";
 import { Order } from "../../models/order";
 import { createCookie } from "./../../test/setup";
 import { stripe } from "./../../stripe";
+import { Payment } from "../../models/payment";
 
 it("returns a 404 when purchasing an order that does not exist", async () => {
   await request(app)
@@ -83,4 +84,7 @@ it("returns a 201 with valid inputs", async () => {
   expect(chargeOptions.amount).toEqual(order.price * 100);
   expect(chargeOptions.currency).toEqual("usd");
   expect(chargeOptions.source).toEqual("tok_visa");
+
+  const payment = await Payment.findOne({ orderId: order.id });
+  expect(payment).not.toBeNull();
 });
